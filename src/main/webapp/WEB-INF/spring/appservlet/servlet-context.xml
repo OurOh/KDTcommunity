@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans 
     xmlns="http://www.springframework.org/schema/mvc"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xmlns:beans="http://www.springframework.org/schema/beans"
-   xmlns:context="http://www.springframework.org/schema/context"
-   xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
-      http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-      http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
-     
      <annotation-driven />
-     
+     <context:component-scan base-package="net.musecom.kdtcom.controller" />
+    
      <resources mapping="/res/**" location="/res/" />
      
      <beans:bean id="tilesViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
@@ -29,10 +29,9 @@
         <beans:property name="definitions" value="classpath:tiles/tiles.xml"/>
      </beans:bean>
      
-     <!-- 업로드 등록 -->
-	 <benas:bean class="org.springframework.web.servlet.view.title3.TilesConfigurer">
-	 	<beans:property name="definitions" value="classpath:tiles"
-	 
-	 </benas:bean>
-	 
+     <!-- 업로드 등록 --> 
+     <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+     
+     </beans:bean>
+
 </beans:beans>   

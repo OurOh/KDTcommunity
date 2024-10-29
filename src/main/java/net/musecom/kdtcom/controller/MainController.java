@@ -1,76 +1,96 @@
 package net.musecom.kdtcom.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
+import net.musecom.kdtcom.dao.MemberDao;
+import net.musecom.kdtcom.model.MemberDto;
+import net.musecom.kdtcom.service.ClientIpAddress;
+import net.musecom.kdtcom.service.FileUploadService;
 
 @Controller
 public class MainController {
-	
-	@Autowired
-	private
-	
-	
-}
-	@GetMapping("/")
-	public String main() {
-		return "kdtcom.index";
-	}
-	
-@GetMapping("/register")
-public String register() {
-	return "kdt.register";
+  
+  @Autowired	
+  private FileUploadService fileUpload;	
 
-}
+  @Autowired
+  private ClientIpAddress clientIpAddress;
+  
+  @Autowired
+  private BCryptPasswordEncoder passwordEncoder;
+  
+  @Autowired
+  private MemberDao dao;
+  
+  @GetMapping("/")
+  public String main() {
+	  return "kdtcom.index";
+  }
+  
+  @GetMapping("/register")
+  public String register() {
+	  return "kdtcom.register";
+  }
+  
+  @PostMapping("/register")
+  public String fomrRegister(
+		  @RequestParam("userid") String userid,
+		  @RequestParam("userpass") String noopUserpass,
+		  @RequestParam("username") String username,
+		  @RequestParam("useremail") String useremail,
+		  @RequestParam("usertel") String usertel,
+		  @RequestParam("zipcode") int zipcode,
+		  @RequestParam("address") String address,
+		  @RequestParam("detail_address") String detail_address,
+		  @RequestParam("extra_address") String extra_address,
+		  @RequestParam("userprofile") String userprofile,
+		  @RequestParam(value="userimg", required=false) MultipartFile userimg, 
+		  HttpServletRequest request,
+		  Model model) {
 
-@PostMapping("/register")
-public String formRegister() {
-		@RequestParm("userid") String userid,
-		@RequestParm("userpass") String userpass,
-		@RequestParm("username") String username,
-		@RequestParm("useremail") String useremail,
-		@RequestParm("usertel") String usertel,
-		@RequestParm("zipcode") int zipcode,
-		@RequestParm("address") String address,
-		@RequestParm("detail_address") String detail_address,
-		@RequestParm("extra_address") String extra_address,
-		@RequestParm("userprofile") String userprofile,
-		@RequestParm(value="userimg", required="false") MultipartFile userimg,
-		Model model){
-
-		//æ∆¿Ã«« ¡÷º“ æÚ±‚
-		clientIpAddress.setClientIpAddress(request);
-		String userip = clientIpAddress.getClientIpAddress();
-		
-		//∫Òπ–π¯»£ æœ»£»≠
-		String userpass = passwordEncoder.encode(noopUserpass);
-		
+	      MemberDto dto = new MemberDto();
+	       //ÏïÑÏù¥Ìîº Ï£ºÏÜå ÏñªÍ∏∞
+	      clientIpAddress.setClientIpAddress(request);
+	      String userip = clientIpAddress.getClientIpAddress();
+	      
+	      //ÎπÑÎ∞ÄÎ≤àÌò∏ ÏïîÌò∏Ìôî
+          String userpass = passwordEncoder.encode(noopUserpass);
+          
+          dto.setUserid(userid);
+          dto.setUserpass(userpass);
+          dto.setUsername(username);
+          dto.setUseremail(useremail);
+          dto.setUsertel(usertel);
+          dto.setZipcode(zipcode);
+          dto.setAddress(address);
+          dto.setDetail_address(detail_address);
+          dto.setExtra_address(extra_address);
+          dto.setUserprofile(userprofile);
+          dto.setUserip(userip);
+          
 	try {
-		//æ˜∑ŒµÂ √≥∏Æ
+		//ÏóÖÎ°úÎìú Ï≤òÎ¶¨
 		if(userimg != null && !userimg.isEmpty()) {
-			fileUpload.setAbsoultePath()
-			String[] exts = {"jpg","gif","png"};
-			
-			
+		  fileUpload.setAbsolutePath("members");
+		  String[] exts = {"jpg", "gif", "png"};
+		  fileUpload.setAllowedExt(exts);
+		  String imgname = fileUpload.uploadFile(userimg);
+		  dto.setUserimg(imgname);		  
 		}
+	}catch(Exception e) {
+		model.addAttribute("error", "file upload failed: " + e.getMessage());
 	}
-		
-		
-		
-		
-	}
-			
-			
-			
+	      dao.insertMem(dto);
+	      
+    return "kdtcom.index";
+  }
 }
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
