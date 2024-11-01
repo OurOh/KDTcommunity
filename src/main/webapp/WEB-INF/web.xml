@@ -7,13 +7,10 @@
   </listener>
 
    <!-- 스프링 기본 설정 파일 -->
-   <context-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>
-              /WEB-INF/spring/root-context.xml,
-              /WEB-INF/spring/security-context.xml
-      </param-value>
-   </context-param>
+	<context-param>
+	    <param-name>contextConfigLocation</param-name>
+	    <param-value>/WEB-INF/spring/root-context.xml,/WEB-INF/spring/security-context.xml</param-value>
+	</context-param>
 
    <!-- 요청 처리 -->
    <servlet>

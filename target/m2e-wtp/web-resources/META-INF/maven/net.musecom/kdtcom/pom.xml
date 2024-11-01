@@ -7,7 +7,7 @@
   <version>1.0.0-BUILD-SNAPSHOT</version>
   <packaging>war</packaging>
   <name>kdtcom</name>
-  <description>kdt comunity project</description>
+  <description>kdt community project</description>
   <properties>
      <java-version>11</java-version>
      <org.springframework-version>5.2.25.RELEASE</org.springframework-version>
@@ -32,6 +32,11 @@
       <artifactId>spring-jdbc</artifactId>
       <version>${org.springframework-version}</version>
    </dependency> 
+   <dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-web</artifactId>
+    <version>${org.springframework-version}</version>
+</dependency>
    
   		<!-- Spring Security web, config, core, crypto -->			
 		<dependency>
